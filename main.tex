@@ -1,0 +1,318 @@
+\documentclass[11pt]{book}
+\usepackage[utf-8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Theorem styles
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{recollection}[theorem]{Recollection}
+
+% Title and author
+\title{Introduction to p-adic Numbers and Modular Equations}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter*{Contents}
+\addcontentsline{toc}{chapter}{Contents}
+
+\begin{itemize}
+    \item Introduction \hfill 1
+    \item Chapter 1. Congruences and modular equations \hfill 3
+    \item Chapter 2. The p-adic norm and the p-adic numbers \hfill 15
+    \item Chapter 3. Some elementary p-adic analysis \hfill 29
+    \item Chapter 4. The topology of $\mathbb{Q}_p$ \hfill 33
+    \item Chapter 5. p-adic algebraic number theory \hfill 47
+    \item Bibliography \hfill 53
+\end{itemize}
+
+\chapter{Congruences and modular equations}
+
+\section*{Introduction to modular arithmetic}
+
+Let $n \in \mathbb{Z}$ (we will usually have $n > 0$). We define the binary relation $\equiv_n$ by
+
+\begin{definition}
+If $x, y \in \mathbb{Z}$, then $x \equiv_n y$ if and only if $n \mid (x - y)$. This is often also written as $x \equiv y \pmod{n}$ or $x \equiv y \, (n)$.
+\end{definition}
+
+Notice that when $n = 0$, $x \equiv_0 y$ if and only if $x = y$, so in that case $\equiv_0$ is really just equality.
+
+\begin{proposition}
+The relation $\equiv_n$ is an equivalence relation on $\mathbb{Z}$.
+\end{proposition}
+
+\begin{proof}
+Let $x, y, z \in \mathbb{Z}$. Clearly $\equiv_n$ is reflexive since $n \mid (x - x) = 0$. It is symmetric since if $n \mid (x - y)$ then $x - y = kn$ for some $k \in \mathbb{Z}$, hence $y - x = (-k)n$ and so $n \mid (y - x)$. For transitivity, suppose that $n \mid (x - y)$ and $n \mid (y - z)$; then since $x - z = (x - y) + (y - z)$ we have $n \mid (x - z)$. \qed
+\end{proof}
+
+If $n > 0$, we denote the equivalence class of $x \in \mathbb{Z}$ by $[x]_n$ or just $[x]$ if $n$ is understood; it is also common to use $\bar{x}$ for this if the value of $n$ is clear from the context. From the definition,
+\[
+[x]_n = \{y \in \mathbb{Z} : y \equiv_n x\} = \{y \in \mathbb{Z} : y = x + kn \text{ for some } k \in \mathbb{Z}\},
+\]
+and there are exactly $|n|$ such \emph{residue classes}, namely
+\[
+[0]_n, [1]_n, \ldots, [n-1]_n.
+\]
+
+Of course we can replace these representatives by any others as required.
+
+\begin{definition}
+The set of all \emph{residue classes of $\mathbb{Z}$ modulo $n$} is
+\[
+\mathbb{Z}/n = \{[x]_n : x = 0, 1, \ldots, n - 1\}.
+\]
+
+If $n = 0$ we interpret $\mathbb{Z}/0$ as $\mathbb{Z}$.
+\end{definition}
+
+Consider the function
+\[
+\pi_n : \mathbb{Z} \longrightarrow \mathbb{Z}/n; \quad \pi_n(x) = [x]_n.
+\]
+
+This is onto and also satisfies
+\[
+\pi_n^{-1}(\alpha) = \{x \in \mathbb{Z} : x \equiv \alpha\}.
+\]
+
+We can define \emph{addition} $+_n$ and \emph{multiplication} $\times_n$ on $\mathbb{Z}/n$ by the formulae
+\[
+[x]_n +_n [y]_n = [x + y]_n, \quad [x]_n \times_n [y]_n = [xy]_n,
+\]
+
+\section{Units and Zero Divisors}
+
+Now let us consider the structure of the ring $\mathbb{Z}/n$. The zero is $\bar{0} = [0]_n$ and the unit is $\bar{1} = [1]_n$. We may also ask about \emph{units} and \emph{zero divisors}. In the following, let $R$ be a commutative ring with unity $1$ (which we assume is not equal to $0$).
+
+\begin{definition}
+An element $u \in R$ is a \emph{unit} if there exists a $v \in R$ satisfying
+\[
+uv = vu = 1.
+\]
+
+Such a $v$ is necessarily unique and is called the \emph{inverse} of $u$ and is usually denoted $u^{-1}$.
+\end{definition}
+
+\begin{definition}
+$z \in R$ is a \emph{zero divisor} if there exists at least one $w \in R$ with $w \neq 0$ and $zw = 0$. There may be lots of such $w$ for each zero divisor $z$.
+\end{definition}
+
+Notice that in any ring $0$ is always a zero divisor since $1 \cdot 0 = 0 = 0 \cdot 1$.
+
+\begin{example}
+Let $n = 6$; then $\mathbb{Z}/6 = \{0, 1, \ldots, 5\}$. The units are $\bar{1}, \bar{5}$ with $\bar{1}^{-1} = \bar{1}$ and $\bar{5}^{-1} = \bar{5}$ since $5^2 = 25 \equiv 1 \pmod{6}$. The zero divisors are $\bar{0}, \bar{2}, \bar{3}, \bar{4}$ since $2 \times 3 = 0 \pmod{6}$.
+\end{example}
+
+In this example notice that the zero divisors all have a factor in common with $6$; this is true for all $\mathbb{Z}/n$ (see below). It is also true that for any ring, a zero divisor cannot be a unit (why?) and a unit cannot be a zero divisor.
+
+Recall that if $a, b \in \mathbb{Z}$ then the \emph{greatest common divisor} (gcd) or \emph{highest common factor} (hcf) of $a$ and $b$ is the largest positive integer dividing both $a$ and $b$. We often write $\gcd(a,b)$ for this. When $a = 0 = b$ we have $\gcd(0,0) = 0$.
+
+\begin{theorem}
+Let $n > 0$. Then $\mathbb{Z}/n$ is a disjoint union
+\[
+\mathbb{Z}/n = \{\text{units}\} \cup \{\text{zero divisors}\}
+\]
+
+where $\{\text{units}\}$ is the set of units in $\mathbb{Z}/n$ and $\{\text{zero divisors}\}$ the set of zero divisors. Furthermore,
+\begin{enumerate}
+    \item[(a)] $\bar{z}$ is a zero divisor if and only if $\gcd(z, n) > 1$;
+    \item[(b)] $\bar{u}$ is a unit if and only if $\gcd(u, n) = 1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If $h = \gcd(x, n) > 1$ we have $x = x_0 h$ and $n = n_0 h$, so
+\[
+n_0 x = 0.
+\]
+
+Hence $\bar{x}$ is a zero divisor in $\mathbb{Z}/n$.
+
+Let us prove (b). First we suppose that $\bar{u}$ is a unit; let $\bar{v} = \bar{u}^{-1}$. Suppose that $\gcd(u, n) > 1$. Then $uv \equiv 1 \pmod{n}$ and so for some integer $k$,
+\[
+uv - 1 = kn.
+\]
+
+But then $\gcd(u, n) \mid 1$, which is absurd. So $\gcd(u, n) = 1$. Conversely, if $\gcd(u, n) = 1$ we must demonstrate that $\bar{u}$ is a unit. To do this we will need to make use of the \emph{Euclidean Algorithm}.
+\end{proof}
+
+\begin{recollection}
+\emph{(Euclidean Property of the integers)} Let $a, b \in \mathbb{Z}$ with $b \neq 0$; then there exist unique $q, r \in \mathbb{Z}$ for which $a = qb + r$ with $0 \leq r < |b|$.
+\end{recollection}
+
+From this we can deduce
+
+\begin{theorem}[The Euclidean Algorithm]
+Let $a, b \in \mathbb{Z}$ then there are unique sequences of integers $q_i, r_i$ satisfying
+\begin{align*}
+a &= q_1 b + r_1 \\
+r_0 = b &= q_2 r_1 + r_2 \\
+r_1 &= q_3 r_2 + r_3 \\
+&\vdots \\
+0 \neq r_{N-1} &= q_{N+1} r_N
+\end{align*}
+
+where we have $0 \leq r_i < r_{i-1}$ for each $i$. Furthermore, we have $r_N = \gcd(a, b)$ and then by back substitution for suitable $s, t \in \mathbb{Z}$ we can write
+\[
+r_N = sa + tb.
+\]
+\end{theorem}
+
+\begin{example}
+If $a = 6, b = 5$, then $r_0 = 5$ and we have
+\begin{align*}
+6 &= 1 \cdot 5 + 1, \quad \text{so } q_1 = 1, r_1 = 1, \\
+5 &= 5 \cdot 1, \quad \text{so } q_2 = 5, r_2 = 0.
+\end{align*}
+
+Therefore we have $\gcd(6, 5) = 1$ and we can write $1 = 1 \cdot 6 + (-1) \cdot 5$.
+\end{example}
+
+Now we return to the proof of Theorem 1.8. Using the Euclidean Algorithm, we can write $su + tn = 1$ for suitable $s, t \in \mathbb{Z}$. But then $su \equiv 1 \pmod{n}$ and $\bar{s} = \bar{u}^{-1}$, so $\bar{u}$ is indeed a unit in $\mathbb{Z}/n$. These proves part (b). But we also have part (a) as well since a zero divisor $\bar{z}$ cannot be a unit, hence has to have $\gcd(z, n) > 1$. \qed
+
+\section{The Chinese Remainder Theorem}
+
+\begin{theorem}
+There is a unique isomorphism of rings
+\[
+\Phi : \mathbb{Z}/n \cong \mathbb{Z}/p_1^{r_1} \times \mathbb{Z}/p_2^{r_2} \times \cdots \times \mathbb{Z}/p_s^{r_s}
+\]
+and an isomorphism of groups
+\[
+\Phi^{\times} : (\mathbb{Z}/n)^{\times} \cong (\mathbb{Z}/p_1^{r_1})^{\times} \times (\mathbb{Z}/p_2^{r_2})^{\times} \times \cdots \times (\mathbb{Z}/p_s^{r_s})^{\times}.
+\]
+
+Thus we have
+\[
+\varphi(n) = \varphi(p_1^{r_1}) \varphi(p_2^{r_2}) \cdots \varphi(p_s^{r_s}).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $a, b > 0$ be \emph{coprime} (i.e., $\gcd(a,b) = 1$). We will show that there is an isomorphism of rings
+\[
+\Psi : \mathbb{Z}/ab \cong \mathbb{Z}/a \times \mathbb{Z}/b.
+\]
+
+By Theorem 1.10, there are $u, v \in \mathbb{Z}$ such that $ua + vb = 1$. It is easily checked that
+\[
+\gcd(a, v) = 1 = \gcd(b, u).
+\]
+
+Define a function
+\[
+\Psi : \mathbb{Z}/ab \longrightarrow \mathbb{Z}/a \times \mathbb{Z}/b; \quad \Psi([x]_{ab}) = ([x]_a, [x]_b).
+\]
+
+This is easily seen to be a ring homomorphism. Notice that
+\[
+|\mathbb{Z}/ab| = ab = |\mathbb{Z}/a| |\mathbb{Z}/b| = |\mathbb{Z}/a \times \mathbb{Z}/b|
+\]
+
+and so to show that $\Psi$ is an isomorphism, it suffices to show that it is \emph{onto}.
+
+Let $([y]_a, [z]_b) \in \mathbb{Z}/a \times \mathbb{Z}/b$. We must find an $x \in \mathbb{Z}$ such that $\Psi([x]_{ab}) = ([y]_a, [z]_b)$. Now set $x = vby + uaz$; then
+\begin{align*}
+x &= (1 - ua)y + uaz = y, \\
+x &= vby + (1 - vb)z \equiv z,
+\end{align*}
+
+hence we have $\Psi([x]_{ab}) = ([y]_a, [z]_b)$ as required.
+
+We also have the result for cyclic groups and applied directly to the Chinese Remainder Theorem above (for the general case we need to use the Structure Theorem for Finitely Generated Abelian Groups).
+\end{proof}
+
+\section{Primitive Roots and Gauss's Theorem}
+
+We also have the more basic
+
+\begin{theorem}[Gauss's Primitive Root Theorem]
+For any prime $p$, the group $(\mathbb{Z}/p)^{\times}$ is cyclic of order $p - 1$. Hence there is an element $\bar{a} \in \mathbb{Z}/p$ of order $p - 1$.
+\end{theorem}
+
+The proof of this uses for example the structure theorem for finitely generated abelian groups. A generator of $(\mathbb{Z}/p)^{\times}$ is called a \emph{primitive root modulo} $p$ and there are exactly $\varphi(p - 1)$ of these in $(\mathbb{Z}/p)^{\times}$.
+
+\section{Hensel's Lemma}
+
+\begin{theorem}[Hensel's Lemma: first version]
+Let $f(X) = \sum_{k=0}^d a_k X^k \in \mathbb{Z}[X]$ and suppose that $x \in \mathbb{Z}$ is a root of $f$ modulo $p^s$ (with $s \geq 1$) and that $f'(x)$ is a unit modulo $p$. Then there is a unique root $x' \in \mathbb{Z}/p^{s+1}$ of $f$ modulo $p^{s+1}$ satisfying $x' \equiv x \pmod{p^s}$; moreover, $x'$ is given by the formula
+\[
+x' \equiv x - uf(x) \pmod{p^{s+1}},
+\]
+where $u \in \mathbb{Z}$ satisfies $uf'(x) \equiv 1 \pmod{p}$, i.e., $u$ is an inverse for $f'(x)$ modulo $p$.
+\end{theorem}
+
+\begin{proof}
+We have
+\[
+f(x) \equiv 0, \quad f'(x) \not\equiv 0 \pmod{p},
+\]
+so there is such a $u \in \mathbb{Z}$. Now consider the polynomial $f(x + Tp^s) \in \mathbb{Z}[T]$. Then
+\[
+f(x + Tp^s) \equiv f(x) + f'(x)Tp^s + \cdots \quad \pmod{(Tp^s)^2}
+\]
+by the usual version of Taylor's expansion for a polynomial over $\mathbb{Z}$. Hence, for any $t \in \mathbb{Z}$,
+\[
+f(x + tp^s) \equiv f(x) + f'(x)tp^s + \cdots \quad \pmod{p^{2s}}.
+\]
+
+An easy calculation now shows that
+\[
+f(x + tp^s) \equiv 0 \pmod{p^{s+1}} \quad \Longleftrightarrow \quad t \equiv -uf(x)/p^s \pmod{p}.
+\]
+\end{proof}
+
+\begin{theorem}[Hensel's Lemma: many variables and functions]
+Let
+\[
+f_j(X_1, X_2, \ldots, X_n) \in \mathbb{Z}[X_1, X_2, \ldots, X_n]
+\]
+for $1 \leq j \leq m$ be a collection of polynomials and set $\mathbf{f} = (f_j)$. Let $\mathbf{a} = (a_1, \ldots, a_n) \in \mathbb{Z}^n$ be a solution of $\mathbf{f}$ modulo $p^k$. Suppose that the $m \times n$ derivative matrix
+\[
+D\mathbf{f}(\mathbf{a}) = \left(\frac{\partial f_j}{\partial X_i}(\mathbf{a})\right)
+\]
+has full rank when considered as a matrix defined over $\mathbb{Z}/p$. Then there is a solution $\mathbf{a}' = (a_1', \ldots, a_n') \in \mathbb{Z}^n$ of $\mathbf{f}$ modulo $p^{k+1}$ satisfying $\mathbf{a}' \equiv \mathbf{a} \pmod{p^k}$.
+\end{theorem}
+
+\begin{example}
+For each of the values $k = 1, 2, 3$, solve the simultaneous system
+\begin{align*}
+f(X, Y, Z) &= 3X^2 + Y \equiv 1 \pmod{2^k}, \\
+g(X, Y, Z) &= XY + YZ \equiv 0 \pmod{2^k}.
+\end{align*}
+\end{example}
+
+Finally we state a version of Hensel's Lemma that applies under slightly more general conditions than the above and will be of importance later.
+
+\begin{theorem}[Hensel's Lemma: General Version]
+Let $f(X) \in \mathbb{Z}[X]$, $r \geq 1$ and $a \in \mathbb{Z}$, satisfy the equations
+\begin{enumerate}
+    \item[(a)] $f(a) \equiv 0 \pmod{p^{2r-1}}$,
+    \item[(b)] $f'(a) \not\equiv 0 \pmod{p^r}$.
+\end{enumerate}
+
+Then there exists $a' \in \mathbb{Z}$ such that
+\[
+f(a') \equiv 0 \pmod{p^{2r+1}} \quad \text{and} \quad a' \equiv a \pmod{p^r}.
+\]
+\end{theorem}
+
+\end{document}
